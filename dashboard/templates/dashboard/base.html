@@ -1,0 +1,213 @@
+{% load static %}
+<!DOCTYPE html>
+<html dir="ltr" lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta index="viewport" content="width=device-width, initial-scale=1">
+    <meta index="description" content="">
+    <meta index="author" content="">
+    <!-- <meta http-equiv="refresh" content="5"> -->
+    <!-- Favicon icon -->
+    <link rel="icon" type="image/png" sizes="16x16" href="{% static 'dashboard/images/logo.png'%}">
+    <title>Task Management App</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap">
+    <link href="{% static 'dashboard/assets/extra-libs/c3/c3.min.css' %}" rel="stylesheet">
+    <link href="{% static 'dashboard/assets/libs/chartist/dist/chartist.min.css'%}" rel="stylesheet">
+    <link href="{% static 'dashboard/assets/extra-libs/jvector/jquery-jvectormap-2.0.2.css' %}" rel="stylesheet" />
+    <link href="{% static 'dashboard/dist/css/style.min.css'%}" rel="stylesheet">
+    <link href="{% static 'dashboard/king.css'%}" rel="stylesheet">
+    <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
+</head>
+
+<body>
+    {% url 'dashboard-home' as home%}
+    <div class="preloader">
+        <div class="lds-ripple">
+            <div class="lds-pos"></div>
+            <div class="lds-pos"></div>
+        </div>
+    </div>
+    <div id="main-wrapper" data-theme="light" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full"
+        data-sidebar-position="fixed" data-header-position="fixed" data-boxed-layout="full">
+        <header class="topbar" data-navbarbg="skin6">
+            <nav class="navbar top-navbar navbar-expand-md">
+                <div class="navbar-header" data-logobg="skin6">
+                    <!-- This is for the sidebar toggle which is visible on mobile only -->
+                    <a class="nav-toggler waves-effect waves-light d-block d-md-none" href="javascript:void(0)"><i
+                            class="ti-menu ti-close"></i></a>
+                    <div class="navbar-brand">
+                        <!-- Logo icon -->
+                        <a href="{% url 'dashboard-home'%}">
+                            <b class="logo-icon">
+                                <!-- Dark Logo icon -->
+                                <img src="{%static 'dashboard/images/logo.png'%}" alt="homepage" class="dark-logo" />
+                                <!-- Light Logo icon -->
+                                <img src="{% static 'dashboard/images/logo.png'%}" alt="homepage" class="light-logo" />
+                            </b>
+                            <!--End Logo icon -->
+                            <!-- Logo text -->
+                            <span class="logo-text">
+                                <!-- dark Logo text -->
+                                <img src="{%static 'dashboard/images/logoo-text.png'%}" alt="homepage" class="dark-logo" />
+                                <!-- Light Logo text -->
+                                <img src="{%static 'dashboard/images/logoo-text.png'%}" class="light-logo" alt="homepage" />
+                            </span>
+                        </a>
+                    </div>
+                    <a class="topbartoggler d-block d-md-none waves-effect waves-light" href="javascript:void(0)"
+                        data-toggle="collapse" data-target="#navbarSupportedContent"
+                        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><i
+                            class="ti-more"></i></a>
+                </div>
+                <div class="navbar-collapse collapse" id="navbarSupportedContent">
+                    {% if user.is_authenticated %}
+                    {% if request.path == home %}
+                    <!-- Hedder part will be here-->
+                    <div class="d-flex justify-content-between mb-3">
+                        <button id="create-task-btn" class="btn btn-primary">Create Task</button>
+                        <div id="points" class="font-weight-bold text-danger">
+                            <span id="points-icon">🎁</span>
+                            <span id="points-value">Points: 0</span>
+                        </div>
+                    </div>
+                    {% endif %}
+                    {% endif %}
+                    <ul class="navbar-nav float-right">
+                        {% if user.is_authenticated %}
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="javascript:void(0)" data-toggle="dropdown"
+                                    aria-haspopup="true" aria-expanded="false">
+                                    <img src="{{user.profile.image.url}}" alt="user" class="rounded-circle"
+                                        width="40">
+                                    <span class="ml-2 d-none d-lg-inline-block"><span>Hello,</span> <span
+                                            class="text-dark">{{user.username}}</span> <i data-feather="chevron-down"
+                                            class="svg-icon"></i></span>
+                                </a>
+                                <div class="dropdown-menu dropdown-menu-right user-dd animated flipInY">
+                                    <a class="dropdown-item" href="{% url 'profile' %}"><i data-feather="user"
+                                            class="svg-icon mr-2 ml-1"></i>
+                                        My Profile</a>
+                                    <a class="dropdown-item" href="javascript:void(0)"><i data-feather="mail"
+                                            class="svg-icon mr-2 ml-1"></i>
+                                        Inbox</a>
+                                    <div class="dropdown-divider"></div>
+                                    <a class="dropdown-item" href="{% url 'settings' %}"><i data-feather="settings"
+                                            class="svg-icon mr-2 ml-1"></i>
+                                        Account Setting</a>
+                                    <div class="dropdown-divider"></div>
+                                    <a class="dropdown-item" href="{% url 'logout' %}"><i data-feather="power"
+                                            class="svg-icon mr-2 ml-1"></i>
+                                        Logout</a>
+                                </div>
+                            </li>
+                        {% endif %}
+                    </ul>
+                </div>
+            </nav>
+        </header>
+        <aside class="left-sidebar" data-sidebarbg="skin6">
+            <!-- Sidebar scroll-->
+            <div class="scroll-sidebar" data-sidebarbg="skin6">
+                <!-- Sidebar navigation-->
+                <nav class="sidebar-nav">
+                    <ul id="sidebarnav">
+                        <li class="sidebar-item"> <a class="sidebar-link sidebar-link" href="{% url 'dashboard-home'%}"
+                                aria-expanded="false"><i data-feather="home" class="feather-icon"></i><span
+                                    class="hide-menu">Dashboard</span></a></li>
+                        {% if user.is_authenticated %}
+                        {% else %}
+                            <li class="list-divider"></li>
+                            <li class="nav-small-cap"><span class="hide-menu">Authentication</span></li>
+                            <li class="sidebar-item"> <a class="sidebar-link sidebar-link" href="{% url 'login'%}"
+                                        aria-expanded="false"><i data-feather="lock" class="feather-icon"></i><span
+                                            class="hide-menu">Login
+                                        </span></a>
+                            </li>
+                            <li class="sidebar-item"> <a class="sidebar-link sidebar-link"
+                                    href="{% url 'register'%}" aria-expanded="false"><i data-feather="lock"
+                                        class="feather-icon"></i><span class="hide-menu">Register
+                                    </span></a>
+                            </li>
+                        {% endif %}
+                    </ul>
+                </nav>
+            </div>
+        </aside>
+        <div class="page-wrapper mt-3 pl-3">
+            {% if request.path == home %}
+            {% if user.is_authenticated %}
+                <!-- Task will be here-->
+                <div class="card mb-4">
+                    <div class="card-header font-weight-bold">Pending</div>
+                    <div id="task-list-pending" class="list-group list-group-flush">
+                        
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-header font-weight-bold">Completed</div>
+                    <div id="task-list-completed" class="list-group list-group-flush"></div>
+                </div>
+                <div id="popup-form" class="modal" tabindex="-1" role="dialog">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Create Task</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <form>
+                                    <div class="form-group">
+                                        <label for="task-name">Task Name</label>
+                                        <input type="text" class="form-control" id="task-name" name="TaskName" placeholder="Enter task name">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="task-points">Points</label>
+                                        <input type="number" class="form-control" id="task-points" name="TaskPoints" placeholder="Enter points">
+                                    </div>
+                                    <div class="d-flex justify-content-center">
+                                        <button type="button" id="submit-task-btn" class="btn btn-primary">Submit</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="overlay" class="overlay hidden"></div>
+            {% else %}
+                <div class="ml-3">
+                <h2>You need to <b>login</b> first to freely use all of the free functionality provided by <u>Kstocks</u>.</h2>
+                <br>
+                <br>
+                <small>Thank You, Have a nice day.</small>
+                </div>
+            {% endif %}
+            {% endif %}
+            {% block content %}{% endblock %}
+            
+        </div>
+    </div>
+    <script src="{% static 'dashboard/dist/js/script.js'%}"></script>
+    <script src="{% static 'dashboard/assets/libs/jquery/dist/jquery.min.js'%}"></script>
+    <script src="{% static 'dashboard/assets/libs/popper.js/dist/umd/popper.min.js'%}"></script>
+    <script src="{% static 'dashboard/assets/libs/bootstrap/dist/js/bootstrap.min.js'%}"></script>
+    <script src="{% static 'dashboard/dist/js/app-style-switcher.js'%}"></script>
+    <script src="{% static 'dashboard/dist/js/feather.min.js'%}"></script>
+    <script src="{% static 'dashboard/assets/libs/perfect-scrollbar/dist/perfect-scrollbar.jquery.min.js'%}"></script>
+    <script src="{% static 'dashboard/dist/js/sidebarmenu.js'%}"></script>
+    <script src="{% static 'dashboard/dist/js/custom.min.js'%}"></script>
+    <script src="{% static 'dashboard/assets/extra-libs/c3/d3.min.js'%}"></script>
+    <script src="{% static 'dashboard/assets/extra-libs/c3/c3.min.js'%}"></script>
+    <script src="{% static 'dashboard/assets/libs/chartist/dist/chartist.min.js'%}"></script>
+    <script src="{% static 'dashboard/assets/libs/chartist-plugin-tooltips/dist/chartist-plugin-tooltip.min.js'%}"></script>
+    <script src="{% static 'dashboard/assets/extra-libs/jvector/jquery-jvectormap-2.0.2.min.js'%}"></script>
+    <script src="{% static 'dashboard/assets/extra-libs/jvector/jquery-jvectormap-world-mill-en.js'%}"></script>
+    <script src="{% static 'dashboard/dist/js/pages/dashboards/dashboard1.min.js'%}"></script>
+</body>
+
+</html>
