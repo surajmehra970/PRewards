@@ -148,7 +148,7 @@
                 <div class="tasks">
                     {% for task in tasks %}
                         {% if not task.is_completed %}
-                            <div class="task mr-auto">
+                            <div class="task">
                                 <input type="checkbox" onclick="window.location.href='{% url 'toggle_task' task.id %}'">
                                 <span>{{ task.name }}</span>
                                 <span>{{ task.created_date }}</span>
