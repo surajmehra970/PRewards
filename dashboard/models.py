@@ -1,10 +1,13 @@
 from django.db import models
+from django.contrib.auth.models import User
 
-class TaskData(models.Model):
-    TaskName = models.CharField(max_length=50)
-    TaskPoints = models.CharField(max_length=200)
-    UserName = models.CharField(max_length=200)
-    Status = models.CharField(max_length=50)
+class Task(models.Model):
+    UserName = models.ForeignKey(User, on_delete=models.CASCADE)
+    name = models.CharField(max_length=200)
+    points = models.IntegerField()
+    is_completed = models.BooleanField(default=False)
+    created_date = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return self.name
+

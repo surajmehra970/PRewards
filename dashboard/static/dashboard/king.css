@@ -1,70 +1,27 @@
-.arrowup{
-    position: absolute;
-    top: 55%;
-    left: 31%;
-    transform: translate(50%,50%);
+body {
+    font-family: 'Poppins', sans-serif;
 }
-.arrowup span{
-    display: block;
-    width: 10px;
-    height: 10px;
-    border-top: 3px solid #47d147;
-    border-left: 3px solid #47d147;
-    transform: rotate(45deg);
-    margin: -10px;
-    animation: animate 2s infinite;
+
+
+.tasks {
+    border: 1px solid #ddd;
+    padding: 10px;
+    margin-top: 20px;
+    background: #fff;
 }
-.arrowup span:nth-child(2){
-    animation-delay: -0.3s;
+
+.task {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px;
+    border-bottom: 1px solid #eee;
 }
-.arrowup span:nth-child(3){
-    animation-delay: -0.6s;
+
+.task:last-child {
+    border-bottom: none;
 }
-@keyframes animate {
-    0%{
-        opacity: 0;
-        transform: rotate(45deg) translate(10px,10px);
-    }
-    50%{
-        opacity: 1;
-    }
-    100%{
-        opacity: 0;
-        transform: rotate(45deg) translate(-15px,-15px);
-    }
-}
-.arrowdo{
-    position: absolute;
-    top: 55%;
-    left: 31%;
-    transform: translate(-50%,-50%);
-}
-.arrowdo span{
-    display: block;
-    width: 10px;
-    height: 10px;
-    border-bottom: 3px solid #ff3333;
-    border-right: 3px solid #ff3333;
-    transform: rotate(45deg);
-    margin: -10px;
-    animation: anim 2s infinite;
-}
-.arrowdo span:nth-child(2){
-    animation-delay: -0.3s;
-}
-.arrowdo span:nth-child(3){
-    animation-delay: -0.6s;
-}
-@keyframes anim {
-    0%{
-        opacity: 0;
-        transform: rotate(45deg) translate(-15px,-15px);
-    }
-    50%{
-        opacity: 1;
-    }
-    100%{
-        opacity: 0;
-        transform: rotate(45deg) translate(10px,10px);
-    }
+
+.points {
+    font-weight: bold;
+    color: #ff5722;
 }

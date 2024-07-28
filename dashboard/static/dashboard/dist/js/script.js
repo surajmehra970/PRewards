@@ -24,10 +24,12 @@ document.addEventListener('DOMContentLoaded', function() {
                     document.getElementById('points-value').textContent = `Points: ${currentPoints + newPoints}`;
                     taskItem.classList.add('list-group-item-success');
                     document.getElementById('task-list-completed').appendChild(taskItem);
+                    console.log(taskItem)
                 } else {
                     document.getElementById('points-value').textContent = `Points: ${currentPoints - newPoints}`;
                     taskItem.classList.remove('list-group-item-success');
                     taskListPending.appendChild(taskItem);
+                    console.log(taskItem)
                 }
             });
 
